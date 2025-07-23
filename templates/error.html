@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro - UNITED HUB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-lg border-danger">
+                    <div class="card-header bg-danger text-white text-center">
+                        <h1 class="display-6 mb-0">
+                            <i class="fas fa-exclamation-triangle"></i> {{ error_title or "Erro" }}
+                        </h1>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-times"></i>
+                            <strong>Erro:</strong> {{ error_message or "Ocorreu um erro inesperado." }}
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="/" class="btn btn-primary">
+                                <i class="fas fa-home"></i> Voltar ao Início
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
