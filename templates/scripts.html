@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Scripts MeepCity - Hub de Automação{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="hero-section text-center mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold text-gradient mb-3">
+                    <i class="fas fa-rocket me-3"></i>
+                    Scripts MeepCity
+                </h1>
+                <p class="lead text-muted mb-4">
+                    Coleção completa de scripts e ferramentas para automatizar e aprimorar sua experiência no MeepCity
+                </p>
+                <div class="stats-row d-flex justify-content-center gap-4 flex-wrap">
+                    <div class="stat-item">
+                        <span class="stat-number">{{ scripts|length }}</span>
+                        <span class="stat-label">Scripts</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Gratuito</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Disponível</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Grid -->
+    <div class="scripts-grid">
+        <div class="row g-4">
+            {% for script in scripts %}
+            <div class="col-lg-6 col-xl-4">
+                <div class="script-card h-100">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="script-title mb-2">
+                                <i class="fas fa-code me-2"></i>
+                                {{ script.name }}
+                            </h5>
+                            <span class="badge bg-primary">{{ script.category or 'Script' }}</span>
+                        </div>
+                        <p class="script-description text-muted mb-3">
+                            {{ script.description }}
+                        </p>
+                        {% if script.key_required %}
+                        <div class="key-info mb-3">
+                            <small class="text-warning">
+                                <i class="fas fa-key me-1"></i>
+                                Key necessária: <code class="key-code">{{ script.key }}</code>
+                            </small>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="code-container">
+                            <div class="code-header">
+                                <span class="code-language">Lua</span>
+                                <button class="btn btn-outline-primary btn-sm copy-btn" 
+                                        onclick="copyToClipboard('{{ script.code|e }}', this)">
+                                    <i class="fas fa-copy me-1"></i>
+                                    Copiar
+                                </button>
+                            </div>
+                            <pre class="code-block"><code>{{ script.code }}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                Atualizado recentemente
+                            </small>
+                            {% if script.working_status %}
+                            <span class="badge bg-success">
+                                <i class="fas fa-check me-1"></i>
+                                Funcionando
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    {% if not scripts %}
+    <div class="empty-state text-center py-5">
+        <div class="empty-icon mb-4">
+            <i class="fas fa-code text-muted"></i>
+        </div>
+        <h3 class="text-muted mb-3">Nenhum script encontrado</h3>
+        <p class="text-muted">
+            Os scripts estão sendo carregados ou não há scripts disponíveis no momento.
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Info Section -->
+    <div class="info-section mt-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="info-card text-center p-4">
+                    <div class="info-icon mb-3">
+                        <i class="fas fa-shield-alt text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">Segurança</h5>
+                    <p class="text-muted">
+                        Scripts verificados e seguros para uso no MeepCity
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="info-card text-center p-4">
+                    <div class="info-icon mb-3">
+                        <i class="fas fa-sync-alt text-success"></i>
+                    </div>
+                    <h5 class="fw-bold">Atualizações</h5>
+                    <p class="text-muted">
+                        Scripts constantemente atualizados para compatibilidade
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="info-card text-center p-4">
+                    <div class="info-icon mb-3">
+                        <i class="fas fa-support text-info"></i>
+                    </div>
+                    <h5 class="fw-bold">Suporte</h5>
+                    <p class="text-muted">
+                        Documentação clara e instruções de uso
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Adicionar animações aos cards quando entram na viewport
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observar todos os cards de script
+document.querySelectorAll('.script-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(card);
+});
+</script>
+{% endblock %}
